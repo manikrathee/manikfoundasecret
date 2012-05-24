@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Manik Found a Secret!</title>
+	<meta name="description" content="" />
+	<meta name="author" content="Matthew Gipp" />
+	<link href="style.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="cave">
+	<div class="torch"></div>
+	<div class="torch"></div>
+	<div id="treasure"></div>
+
+	<div id="manik">
+		<div class="sprite"></div>
+	</div>
+	
+	<div id="arch"></div>
+</div>
+
+<div id="text"></div>
+<div id="gloom"></div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+<script>
+(function( $ ){
+	var start = new Date().getTime();
+	var	manik = $('#manik');
+	var	cave = $('#cave');
+	var	torches = $('.torch');
+	var	gloom = $('#gloom');
+	var	text = $('#text');
+
+	var secretSound = new Audio();
+	var torchSound = new Audio();
+	var secretSoundReady = false;
+	var torchSoundReady = false;
+
+	secretSound.addEventListener('canplaythrough', (function(){secretSoundReady = true;}), false);
+	torchSound.addEventListener('canplaythrough', (function(){torchSoundReady = true;}), false);
+
+	secretSound.src = 'secret.wav';
+	torchSound.src = 'torch.wav';
+
+	// kick it off
+	wait(kickIt);
+
+	function wait(fn) {
+		if (!secretSoundReady || !torchSoundReady) {
+			setTimeout(function() {
+				wait(fn);}, 1);
+			return;
+		}
+		// kick it
+		fn();
+	}
+	
+	
+	function kickIt() {
+		console.log((new Date().getTime()) - start);
+		manik.addClass('in-frame walking');
+		
+		setTimeout(function() {
+			manik.removeClass('walking');
+			
+			setTimeout(function() {
+				torchSound.play();
+				lightsOn();				
+			}, 50);
+			
+			setTimeout(function() {
+				secretSound.play();
+				text.addClass('unfurled');
+			}, 1000);
+		}, 1200);
+	}
+
+
+	function lightsOn() {
+		torches.addClass('on-fire');
+		gloom.addClass('full-light');
+	}
+
+
+	cave.on('click', '.torch', function() {
+		$(this).toggleClass('on-fire');
+		torchSound.play();
+		
+		if ($('.on-fire').length === 0 ) {
+			gloom.removeClass('full-light half-light');
+		} else if ($('.on-fire').length === 1 ) {
+			gloom.removeClass('full-light').addClass('half-light');
+		} else {
+			gloom.removeClass('half-light').addClass('full-light');
+		}
+	});
+})( jQuery );
+</script>
+</body>
+</html>

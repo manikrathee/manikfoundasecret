@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+
+
+
+♥
+
+
+
+-->
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -13,7 +22,11 @@
 <div id="cave">
 	<div class="torch"></div>
 	<div class="torch"></div>
-	<div id="treasure"></div>
+	<div id="treasure">
+		<div>
+			<a href="#"></a>
+		</div>
+	</div>
 
 	<div id="manik">
 		<div class="sprite"></div>
@@ -22,69 +35,102 @@
 	<div id="arch"></div>
 </div>
 
-<div id="text"></div>
+
 <div id="gloom"></div>
+<div id="text"></div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 <script>
 (function( $ ){
-	var start = new Date().getTime();
 	var	manik = $('#manik');
 	var	cave = $('#cave');
 	var	torches = $('.torch');
 	var	gloom = $('#gloom');
 	var	text = $('#text');
+	var treasure = $('#treasure');
+
+	var iframe = treasure.find('iframe');
+	var treasureLink = treasure.find('a');
 
 	var secretSound = new Audio();
 	var torchSound = new Audio();
+	var itemSound = new Audio();
+	var chestSound = new Audio();
 	var secretSoundReady = false;
 	var torchSoundReady = false;
+	var itemSoundReady = false;
+	var chestSoundReady = false;
+
 
 	secretSound.addEventListener('canplaythrough', (function(){secretSoundReady = true;}), false);
 	torchSound.addEventListener('canplaythrough', (function(){torchSoundReady = true;}), false);
+	itemSound.addEventListener('canplaythrough', (function(){itemSoundReady = true;}), false);
+	chestSound.addEventListener('canplaythrough', (function(){chestSoundReady = true;}), false);
 
-	secretSound.src = 'secret.wav';
-	torchSound.src = 'torch.wav';
+	var THUMBNAIL = window.location.search.split('=')[1] ? window.location.search.split('=')[1] : 'http://www.manikrathee.com/resources.php';
 
-	// kick it off
-	wait(kickIt);
+	if (THUMBNAIL) {
+		treasureLink.attr('href', THUMBNAIL);
+	}
 
-	function wait(fn) {
-		if (!secretSoundReady || !torchSoundReady) {
-			setTimeout(function() {
-				wait(fn);}, 1);
+	secretSound.src = 'sounds/secret.wav';
+	torchSound.src = 'sounds/torch.wav';
+	itemSound.src = 'sounds/item.wav';
+	chestSound.src = 'sounds/chest.wav';
+
+
+	function step1() {
+		if (!secretSoundReady || !torchSoundReady || !itemSoundReady || !chestSoundReady) {
+			setTimeout(step1, 30);
 			return;
 		}
-		// kick it
-		fn();
+
+		step2();
 	}
-	
-	
-	function kickIt() {
-		console.log((new Date().getTime()) - start);
-		manik.addClass('in-frame walking');
+
+	function step2() {
+		manik.addClass('step-1 walking');
 		
 		setTimeout(function() {
 			manik.removeClass('walking');
 			
-			setTimeout(function() {
-				torchSound.play();
-				lightsOn();				
-			}, 50);
+			torchSound.play();
+			lightsOn();
 			
 			setTimeout(function() {
 				secretSound.play();
-				text.addClass('unfurled');
 			}, 1000);
+
+			treasure.on('click', step3);
+			
 		}, 1200);
 	}
+
+	// add a handler to the chest
+	function step3() {
+
+		manik.addClass('walking step-2').removeClass('step-1');
+
+		setTimeout(function() {
+			chestSound.play();
+			treasure.addClass('open');
+			manik.removeClass('walking');
+			text.addClass('visible');
+
+			treasure.off('click', step3);
+			
+			setTimeout(function() {
+				itemSound.play();
+			}, 100);
+		}, 380);
+	}	
+	
 
 
 	function lightsOn() {
 		torches.addClass('on-fire');
 		gloom.addClass('full-light');
 	}
-
 
 	cave.on('click', '.torch', function() {
 		$(this).toggleClass('on-fire');
@@ -98,6 +144,9 @@
 			gloom.removeClass('half-light').addClass('full-light');
 		}
 	});
+
+
+	step1();
 })( jQuery );
 </script>
 </body>

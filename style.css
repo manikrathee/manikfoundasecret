@@ -40,7 +40,13 @@ table {
 	border-spacing: 0;
 }
 
-html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}
+html {
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+
+
+
 
 
 /* base styles */
@@ -51,18 +57,16 @@ body {
 
 #text {
 	position: absolute;
-	width: 0;
-	height: 50px;
-	top: 30px;
-	background: url(text@10x.png) no-repeat 0 0;
-}
-
-#text.unfurled {
 	left: 50%;
-	width: 860px;
-	margin-left: -430px;
-	-webkit-animation: reveal-text 1.3s 1 linear;
-	-moz-animation: reveal-text 1.3s 1 linear;
+	margin-left: -328px;
+	height: 124px;
+	width: 656px;
+	bottom: 64px;
+	background: url(sprite-sheet@4x.png) 0px -700px;
+	display: none;
+}
+#text.visible {
+	display: block;
 }
 
 #gloom {
@@ -72,10 +76,11 @@ body {
 	top: 0;
 	bottom: 0;
 	background: #000022;
-	opacity: 0.75;
+	opacity: 0.85;
 	pointer-events: none;
 	-webkit-transition: opacity 800ms linear;
-	-moz-transition: opacity 800ms linear;
+	   -moz-transition: opacity 800ms linear;
+	        transition: opacity 800ms linear;
 }
 
 #gloom.full-light {
@@ -103,7 +108,7 @@ body {
 	margin-left: -288px;
 	height: 448px;
 	top: 50%;
-	margin-top: -180px;
+	margin-top: -224px;
 	background: url(sprite-sheet@4x.png) no-repeat 0 -232px;
 }
 
@@ -115,6 +120,13 @@ body {
 	background: url(sprite-sheet@4x.png) -344px -96px;
 	height: 64px;
 	width: 64px;
+
+	cursor: pointer;
+}
+
+#treasure.open {
+	background: url(sprite-sheet@4x.png) -428px -96px;
+	cursor: default;
 }
 
 #manik {
@@ -126,25 +138,31 @@ body {
 	height: 96px;
 }
 
-.sprite {
+#manik .sprite {
 	position: absolute;
 	width: 64px;
 	height: 96px;
 	background: url(sprite-sheet@4x.png) no-repeat 0 0;
 }
 
-#manik.in-frame {
+#manik.step-1 {
 	bottom: 128px;
+	-webkit-animation: enter 1150ms 1 linear;
+	   -moz-animation: enter 1150ms 1 linear;
+	        animation: enter 1150ms 1 linear;
 }
 
-#manik.walking {
-	-webkit-animation:  enter 1150ms 1 linear;
-	   -moz-animation:  enter 1150ms 1 linear;
+#manik.step-2 {
+	bottom: 192px;
+	-webkit-animation: walkToChest 380ms 1 linear;
+	   -moz-animation: walkToChest 380ms 1 linear;
+	        animation: walkToChest 380ms 1 linear;
 }
 
 #manik.walking .sprite {
 	-webkit-animation: walk 380ms steps(1, start) infinite;
 	   -moz-animation: walk 380ms steps(1, end) infinite;
+	        animation: walk 380ms steps(1, end) infinite;
 }
 
 
@@ -171,8 +189,45 @@ body {
 
 .torch.on-fire {	
 	-webkit-animation: burn 1s steps(1, end) infinite;
-	-moz-animation: burn 1s steps(1, end) infinite;
+	   -moz-animation: burn 1s steps(1, end) infinite;
+	        animation: burn 1s steps(1, end) infinite;
 }
+
+
+#treasure > div {
+	display: none;
+
+	width: 48px;
+	height: 44px;
+	margin: 0 auto;
+	position: relative;
+
+	background-color: #0050ab;
+	background-image: url(sprite-sheet@4x.png);
+	background-repeat: no-repeat;
+	background-position: -436px -172px;
+}
+
+#treasure a {
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	position: absolute;
+	display: block;
+}
+
+#treasure.open > div {
+	display: block;
+	top: -32px;
+	-webkit-animation: item 380ms linear;
+	   -moz-animation: item 380ms linear;
+	        animation: item 380ms linear;
+}
+
+
+
+
 
 
 /* Animation keyframes 
@@ -190,16 +245,30 @@ body {
 	100% {background-position: -256px -96px;}
 }
 
-
-@-webkit-keyframes reveal-text {
-	0% {width: 0;}
-	100% {width: 860px;}
+@-webkit-keyframes item {
+	0% {
+		top: 0;
+	}
+	100% {
+		top: -32px;
+	}
 }
-@-moz-keyframes reveal-text {
-	0% {width: 0;}
-	100% {width: 860px;}
+@-moz-keyframes item {
+	0% {
+		top: 0;
+	}
+	100% {
+		top: -32px;
+	}
 }
-
+@keyframes item {
+	0% {
+		top: 0;
+	}
+	100% {
+		top: -32px;
+	}
+}
 
 @-webkit-keyframes enter {
 	0% 	 {bottom: -64px;}
@@ -208,6 +277,24 @@ body {
 @-moz-keyframes enter {
 	0% 	 {bottom: -64px;}
 	100% {bottom: 128px;}
+}
+@keyframes enter {
+	0% 	 {bottom: -64px;}
+	100% {bottom: 128px;}
+}
+
+
+@-webkit-keyframes walkToChest {
+	0% 	 {bottom: 128px;}
+	100% {bottom: 192px;}
+}
+@-moz-keyframes walkToChest {
+	0% 	 {bottom: 128px;}
+	100% {bottom: 192px;}
+}
+@keyframes walkToChest {
+	0% 	 {bottom: 128px;}
+	100% {bottom: 192px;}
 }
 
 
@@ -224,6 +311,18 @@ body {
 	100% {background-position: -640px 0;}
 }
 @-moz-keyframes walk {
+	0% 	 {background-position: -64px 0;}
+	11%  {background-position: -128px 0;}
+	22%  {background-position: -192px 0;}
+	33%  {background-position: -256px 0;}
+	44%  {background-position: -320px 0;}
+	55%  {background-position: -384px 0;}
+	66%  {background-position: -448px 0;}
+	77%  {background-position: -512px 0;}
+	88%  {background-position: -576px 0;}
+	100% {background-position: -640px 0;}
+}
+@keyframes walk {
 	0% 	 {background-position: -64px 0;}
 	11%  {background-position: -128px 0;}
 	22%  {background-position: -192px 0;}

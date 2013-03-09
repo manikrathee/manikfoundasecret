@@ -62,7 +62,7 @@ body {
 	height: 124px;
 	width: 656px;
 	bottom: 64px;
-	background: url(sprite-sheet@4x.png) 0px -700px;
+	background: url(http://manikfoundasecret.number61.net/sprite-sheet@4x.png) 0px -700px;
 	display: none;
 }
 #text.visible {
@@ -97,7 +97,7 @@ body {
 	margin-left: -96px;
 	height: 128px;
 	bottom: 0;
-	background: url(sprite-sheet@4x.png) -512px -96px;
+	background: url(http://manikfoundasecret.number61.net/sprite-sheet@4x.png) -512px -96px;
 }
 
 #cave {
@@ -109,7 +109,7 @@ body {
 	height: 448px;
 	top: 50%;
 	margin-top: -224px;
-	background: url(sprite-sheet@4x.png) no-repeat 0 -232px;
+	background: url(http://manikfoundasecret.number61.net/sprite-sheet@4x.png) no-repeat 0 -232px;
 }
 
 #treasure {
@@ -117,7 +117,7 @@ body {
 	margin-left: -32px;
 	left: 50%;
 	top: 128px;
-	background: url(sprite-sheet@4x.png) -344px -96px;
+	background: url(http://manikfoundasecret.number61.net/sprite-sheet@4x.png) -344px -96px;
 	height: 64px;
 	width: 64px;
 
@@ -125,7 +125,7 @@ body {
 }
 
 #treasure.open {
-	background: url(sprite-sheet@4x.png) -428px -96px;
+	background: url(http://manikfoundasecret.number61.net/sprite-sheet@4x.png) -428px -96px;
 	cursor: default;
 }
 
@@ -142,7 +142,7 @@ body {
 	position: absolute;
 	width: 64px;
 	height: 96px;
-	background: url(sprite-sheet@4x.png) no-repeat 0 0;
+	background: url(http://manikfoundasecret.number61.net/sprite-sheet@4x.png) no-repeat 0 0;
 }
 
 #manik.step-1 {
@@ -175,7 +175,7 @@ body {
 	width: 64px;
 	height: 64px;
 	top: 128px;
-	background: url(sprite-sheet@4x.png) no-repeat 0 -96px;
+	background: url(http://manikfoundasecret.number61.net/sprite-sheet@4x.png) no-repeat 0 -96px;
 	cursor: pointer;
 }
 
@@ -203,7 +203,7 @@ body {
 	position: relative;
 
 	background-color: #0050ab;
-	background-image: url(sprite-sheet@4x.png);
+	background-image: url(http://manikfoundasecret.number61.net/sprite-sheet@4x.png);
 	background-repeat: no-repeat;
 	background-position: -436px -172px;
 }

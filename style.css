@@ -225,7 +225,16 @@ body {
 	        animation: item 380ms linear;
 }
 
-
+#go {
+	position: absolute;
+	left: 50%;
+	margin-left: -180px;
+	top: 50%;
+	margin-top: -132px;
+	width: 360px;
+	height: 264px;
+	background-image: url(http://manikfoundasecret.number61.net/go.png);
+}
 
 
 

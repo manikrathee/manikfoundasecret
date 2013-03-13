@@ -13,6 +13,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=700">
 	<title>Manik Found a Secret!</title>
 	<meta name="description" content="" />
 	<meta name="author" content="Matthew Gipp" />
@@ -53,40 +54,57 @@
 	var iframe = treasure.find('iframe');
 	var treasureLink = treasure.find('a');
 
-	var secretSound = new Audio();
-	var torchSound = new Audio();
-	var itemSound = new Audio();
-	var chestSound = new Audio();
-	var secretSoundReady = false;
-	var torchSoundReady = false;
-	var itemSoundReady = false;
-	var chestSoundReady = false;
-
-
-	secretSound.addEventListener('canplaythrough', (function(){secretSoundReady = true;}), false);
-	torchSound.addEventListener('canplaythrough', (function(){torchSoundReady = true;}), false);
-	itemSound.addEventListener('canplaythrough', (function(){itemSoundReady = true;}), false);
-	chestSound.addEventListener('canplaythrough', (function(){chestSoundReady = true;}), false);
-
+	var secretSound, torchSound, itemSound, chestSound;
+	var secretSoundReady = true;
+	var torchSoundReady = true;
+	var itemSoundReady = true;
+	var chestSoundReady = true;
+	
+	var iOS = ( navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
+	
 	var THUMBNAIL = window.location.search.split('=')[1] ? window.location.search.split('=')[1] : 'http://www.manikrathee.com/resources.php';
-
 	if (THUMBNAIL) {
 		treasureLink.attr('href', THUMBNAIL);
 		treasureLink.attr('title', THUMBNAIL);
 	}
 
-	secretSound.src = 'http://manikfoundasecret.number61.net/sounds/secret.wav';
-	torchSound.src = 'http://manikfoundasecret.number61.net/sounds/torch.wav';
-	itemSound.src = 'http://manikfoundasecret.number61.net/sounds/item.wav';
-	chestSound.src = 'http://manikfoundasecret.number61.net/sounds/chest.wav';
+	function soundSetup() {
+		secretSound = new Audio();
+		torchSound = new Audio();
+		itemSound = new Audio();
+		chestSound = new Audio();
+		
+		secretSoundReady = false;
+		torchSoundReady = false;
+		itemSoundReady = false;
+		chestSoundReady = false;
 
+		secretSound.addEventListener('canplaythrough', (function(){secretSoundReady = true;}), false);
+		torchSound.addEventListener('canplaythrough', (function(){torchSoundReady = true;}), false);
+		itemSound.addEventListener('canplaythrough', (function(){itemSoundReady = true;}), false);
+		chestSound.addEventListener('canplaythrough', (function(){chestSoundReady = true;}), false);
+		
+		secretSound.src = 'http://manikfoundasecret.number61.net/sounds/secret.wav';
+		torchSound.src = 'http://manikfoundasecret.number61.net/sounds/torch.wav';
+		itemSound.src = 'http://manikfoundasecret.number61.net/sounds/item.wav';
+		chestSound.src = 'http://manikfoundasecret.number61.net/sounds/chest.wav';
+	}
+		
+
+	function play(sound) {
+		if (sound) {
+			sound.play();
+		}
+	}
 
 	function step1() {
+		
 		if (!secretSoundReady || !torchSoundReady || !itemSoundReady || !chestSoundReady) {
 			setTimeout(step1, 30);
 			return;
 		}
-
+		
+		
 		step2();
 	}
 
@@ -96,11 +114,12 @@
 		setTimeout(function() {
 			manik.removeClass('walking');
 			
-			torchSound.play();
+			play(torchSound);
+			
 			lightsOn();
 			
 			setTimeout(function() {
-				secretSound.play();
+				play(secretSound);
 			}, 1000);
 
 			treasure.on('click', step3);
@@ -114,7 +133,7 @@
 		manik.addClass('walking step-2').removeClass('step-1');
 
 		setTimeout(function() {
-			chestSound.play();
+			play(chestSound);
 			treasure.addClass('open');
 			manik.removeClass('walking');
 			text.addClass('visible');
@@ -122,7 +141,7 @@
 			treasure.off('click', step3);
 			
 			setTimeout(function() {
-				itemSound.play();
+				play(itemSound);
 			}, 100);
 		}, 380);
 	}	
@@ -136,8 +155,7 @@
 
 	cave.on('click', '.torch', function() {
 		$(this).toggleClass('on-fire');
-		torchSound.play();
-		
+		play(torchSound);
 		if ($('.on-fire').length === 0 ) {
 			gloom.removeClass('full-light half-light');
 		} else if ($('.on-fire').length === 1 ) {
@@ -148,7 +166,19 @@
 	});
 
 
-	step1();
+	if (iOS) {
+		// GO button that downloads all the assets
+		$('<a id="go" href="#"></a>').appendTo($('body')).on('touchend', function(e) {
+			e.preventDefault();
+			$(this).remove();
+			//soundSetup();
+			step1();
+		});
+	} else {
+		soundSetup();
+		step1();
+	}
+	
 })( jQuery );
 </script>
 </body>
